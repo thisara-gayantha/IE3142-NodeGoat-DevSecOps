@@ -815,3 +815,135 @@ DevSecOps pipeline evidence.
 The next project stage is to preserve the vulnerable baseline, perform the
 baseline SAST and dependency-security scans, and then collect the authorised
 BEFORE evidence for V1â€“V4 before modifying the vulnerable source code.
+---
+
+# 16. Implemented Controls and Evidence Update
+
+This section records the controls that were implemented after the initial STRIDE threat model was prepared. It provides traceability between the planned threats, implemented fixes, commit history, and evidence paths.
+
+## T3 / V2 – MongoDB NoSQL Injection through `$where`
+
+**Original planned control:**  
+Remove the dynamically constructed `$where` expression. Parse the threshold as an integer, apply strict range validation, and use normal MongoDB query operators such as `$gt`.
+
+**Implemented control:**  
+The unsafe `$where` query was removed from `app/data/allocations-dao.js`. The `threshold` value is now treated as data instead of executable database-side JavaScript. The fix validates that the threshold is an integer within the expected range and uses the native MongoDB `$gt` operator for comparison.
+
+**Security improvement:**  
+This prevents crafted input such as `1'; return true; var x='` from becoming part of a MongoDB JavaScript expression. MongoDB no longer evaluates attacker-controlled threshold input as server-side JavaScript.
+
+**Implementation location:**  
+`app/data/allocations-dao.js`
+
+**Regression testing:**  
+`test/unit/allocations.test.js`
+
+**Evidence paths:**  
+
+- `evidence/v2-nosql-injection/`
+- `evidence/v2-nosql-injection/npm-test-after-v2.txt`
+- `evidence/v2-nosql-injection/semgrep-after-v2.txt`
+- `evidence/v2-nosql-injection/semgrep-after-v2.json`
+
+**Related commits / PRs:**  
+
+- `485ed54 fix(V2): validate threshold, remove unsafe $where injection (CWE-943)`
+- `fb35330 test(V2): add after-fix verification and Semgrep evidence`
+- PR #1: V2 NoSQL injection fix merged before V4 work
+
+**Status:** Implemented and merged.
+
+---
+
+## T9 – Server-Side Request Forgery through the Research Function
+
+**Original planned control:**  
+Do not permit arbitrary user-controlled destinations. Use a fixed trusted service base URL where possible. Otherwise parse the destination safely, allow only approved protocols and hostnames, reject loopback/private/internal destinations where appropriate, disable unnecessary redirects, and enforce request timeouts.
+
+**Current assignment status:**  
+T9 was documented as a write-up-only issue rather than a full exploit-fix-retest cycle. The risk, impact, and recommended allowlist-based control were documented in the SSRF write-up.
+
+**Documentation location:**  
+`docs/ssrf-writeup.md`
+
+**Reason for write-up-only treatment:**  
+A safe SSRF demonstration requires careful local network isolation to guarantee that no request leaves the authorised test environment. For this assignment, the group prioritised cleaner exploit-fix-retest cycles while documenting SSRF as a future security improvement.
+
+**Recommended future implementation:**  
+
+- Allow only approved destination hostnames.
+- Reject loopback, private IP ranges, localhost, and internal Docker service names.
+- Enforce request timeouts.
+- Avoid returning raw internal error details to users.
+- Log rejected SSRF attempts for monitoring.
+
+**Status:** Documented as future work / write-up only.
+
+---
+
+## Architecture and Docker Hardening Update
+
+**Implemented documentation:**  
+A real architecture documentation file was added to show the user browser, NodeGoat web container, MongoDB container, Docker network boundary, trust boundaries, and the SSRF-sensitive outbound research path.
+
+**Documentation location:**  
+`docs/architecture/architecture.md`
+
+**Docker hardening implemented in:**  
+`docker-compose.yml`
+
+**Implemented Docker improvements:**  
+
+- Removed obsolete Compose `version` field.
+- Added MongoDB healthcheck.
+- Added named MongoDB volume `mongo-data`.
+- Added `depends_on` with `condition: service_healthy` so the web container waits for MongoDB readiness.
+
+**Evidence / verification:**  
+
+- `docker compose config` was used to verify the updated Compose syntax.
+- Docker Compose output confirmed the new `mongo-data` volume, MongoDB healthcheck, and `service_healthy` dependency.
+
+**Related branch / PR:**  
+
+- Branch: `docs/ssrf-architecture-docker-updates`
+- PR #6: Add SSRF write-up, architecture diagram, and Docker hardening
+
+**Status:** Implemented in documentation/hardening branch.
+
+---
+
+## CI/CD and Secrets Management Update
+
+**Implemented CI/CD controls:**  
+
+The DevSecOps Security Pipeline was added using GitHub Actions.
+
+**Workflow location:**  
+`.github/workflows/devsecops-security.yml`
+
+**Pipeline stages:**  
+
+- Build and Unit Tests
+- SAST – Semgrep
+- Dependency Scan – npm audit
+- Secrets Scan – Gitleaks
+- Container Scan – Trivy
+
+**Security gate behaviour:**  
+The pipeline produced successful build/test and SAST stages, while dependency, secrets, and container scanning produced blocking failures. This demonstrates that the CI/CD security gates can stop insecure builds.
+
+**Secrets-management improvements:**  
+
+- Removed committed private key material from `artifacts/cert/server.key`.
+- Added safe placeholder file `artifacts/cert/server.key.example`.
+- Updated `.gitignore` to prevent committing `.env`, key, and certificate files.
+- Redacted sensitive values from `evidence/architecture/baseline_compose_up.txt`.
+
+**Related commits / PRs:**  
+
+- PR #3: Add DevSecOps security pipeline
+- PR #4: Fix secrets management and redact sensitive evidence
+
+**Status:** Implemented and merged.
+
