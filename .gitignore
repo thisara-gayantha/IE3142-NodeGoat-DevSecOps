@@ -1,1 +1,12 @@
 node_modules/ 
+
+# Secrets and certificates
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+artifacts/cert/server.key
+!.env.example
+!*.example
