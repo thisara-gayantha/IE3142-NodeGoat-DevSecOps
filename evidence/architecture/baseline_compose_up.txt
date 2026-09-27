@@ -153,8 +153,8 @@ web-1    | Current Config:
 web-1    | {
 web-1    |   port: 4000,
 web-1    |   db: 'mongodb://mongo:27017/nodegoat',
-web-1    |   cookieSecret: 'session_cookie_secret_key_here',
-web-1    |   cryptoKey: 'a_secure_key_for_crypto_here',
+web-1    |   cookieSecret: '[REDACTED]',
+web-1    |   cryptoKey: '[REDACTED]',
 web-1    |   cryptoAlgo: 'aes256',
 web-1    |   hostName: 'localhost',
 web-1    |   environmentalScripts: [
@@ -162,7 +162,7 @@ web-1    |     `<script>document.write("<script src='http://" + (location.host |
 web-1    |   ],
 web-1    |   zapHostName: '192.168.56.20',
 web-1    |   zapPort: '8080',
-web-1    |   zapApiKey: 'v9dn0balpqas1pcc281tn5ood1',
+web-1    |   zapApiKey: '[REDACTED]',
 web-1    |   zapApiFeedbackSpeed: 5000
 web-1    | }
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.553+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.2:59082","connectionId":2,"connectionCount":1}}
@@ -177,9 +177,9 @@ mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.564+00:00"},"s":"I",  "c":"NETWORK
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.564+00:00"},"s":"I",  "c":"COMMAND",  "id":518070,  "ctx":"conn2","msg":"CMD: drop","attr":{"namespace":"nodegoat.memos"}}
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.564+00:00"},"s":"I",  "c":"COMMAND",  "id":518070,  "ctx":"conn4","msg":"CMD: drop","attr":{"namespace":"nodegoat.counters"}}
 web-1    | Users to insert:
-web-1    | {"_id":1,"userName":"admin","firstName":"Node Goat","lastName":"Admin","password":"Admin_123","isAdmin":true}
-web-1    | {"_id":2,"userName":"user1","firstName":"John","lastName":"Doe","benefitStartDate":"2030-01-10","password":"User1_123"}
-web-1    | {"_id":3,"userName":"user2","firstName":"Will","lastName":"Smith","benefitStartDate":"2025-11-30","password":"User2_123"}
+web-1    | {"_id":1,"userName":"admin","firstName":"Node Goat","lastName":"Admin","password":"[REDACTED]","isAdmin":true}
+web-1    | {"_id":2,"userName":"user1","firstName":"John","lastName":"Doe","benefitStartDate":"2030-01-10","password":"[REDACTED]"}
+web-1    | {"_id":3,"userName":"user2","firstName":"Will","lastName":"Smith","benefitStartDate":"2025-11-30","password":"[REDACTED]"}
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.571+00:00"},"s":"I",  "c":"STORAGE",  "id":20320,   "ctx":"conn4","msg":"createCollection","attr":{"namespace":"nodegoat.counters","uuidDisposition":"generated","uuid":{"uuid":{"$uuid":"d0aa8811-44e0-4081-be03-e5805527ad60"}},"options":{}}}
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.571+00:00"},"s":"I",  "c":"STORAGE",  "id":20320,   "ctx":"conn3","msg":"createCollection","attr":{"namespace":"nodegoat.users","uuidDisposition":"generated","uuid":{"uuid":{"$uuid":"96a95181-e23e-4f85-a46e-1dbd871cd545"}},"options":{}}}
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.590+00:00"},"s":"I",  "c":"INDEX",    "id":20345,   "ctx":"conn4","msg":"Index build: done building","attr":{"buildUUID":null,"namespace":"nodegoat.counters","index":"_id_","commitTimestamp":{"$timestamp":{"t":0,"i":0}}}}
@@ -187,7 +187,7 @@ web-1    | countersCol.insert
 web-1    | {"result":{"ok":1,"n":1},"ops":[{"_id":"userId","seq":3}],"insertedCount":1,"insertedIds":["userId"]}
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:30.596+00:00"},"s":"I",  "c":"INDEX",    "id":20345,   "ctx":"conn3","msg":"Index build: done building","attr":{"buildUUID":null,"namespace":"nodegoat.users","index":"_id_","commitTimestamp":{"$timestamp":{"t":0,"i":0}}}}
 web-1    | users.insertMany
-web-1    | {"result":{"ok":1,"n":3},"ops":[{"_id":1,"userName":"admin","firstName":"Node Goat","lastName":"Admin","password":"Admin_123","isAdmin":true},{"_id":2,"userName":"user1","firstName":"John","lastName":"Doe","benefitStartDate":"2030-01-10","password":"User1_123"},{"_id":3,"userName":"user2","firstName":"Will","lastName":"Smith","benefitStartDate":"2025-11-30","password":"User2_123"}],"insertedCount":3,"insertedIds":[1,2,3]}
+web-1    | {"result":{"ok":1,"n":3},"ops":[{"_id":1,"userName":"admin","firstName":"Node Goat","lastName":"Admin","password":"[REDACTED]","isAdmin":true},{"_id":2,"userName":"user1","firstName":"John","lastName":"Doe","benefitStartDate":"2030-01-10","password":"[REDACTED]"},{"_id":3,"userName":"user2","firstName":"Will","lastName":"Smith","benefitStartDate":"2025-11-30","password":"[REDACTED]"}],"insertedCount":3,"insertedIds":[1,2,3]}
 web-1    | Allocations to insert:
 web-1    | {"userId":1,"stocks":15,"funds":16,"bonds":69}
 web-1    | {"userId":2,"stocks":29,"funds":5,"bonds":66}
@@ -208,8 +208,8 @@ web-1    | Current Config:
 web-1    | {
 web-1    |   port: 4000,
 web-1    |   db: 'mongodb://mongo:27017/nodegoat',
-web-1    |   cookieSecret: 'session_cookie_secret_key_here',
-web-1    |   cryptoKey: 'a_secure_key_for_crypto_here',
+web-1    |   cookieSecret: '[REDACTED]',
+web-1    |   cryptoKey: '[REDACTED]',
 web-1    |   cryptoAlgo: 'aes256',
 web-1    |   hostName: 'localhost',
 web-1    |   environmentalScripts: [
@@ -217,7 +217,7 @@ web-1    |     `<script>document.write("<script src='http://" + (location.host |
 web-1    |   ],
 web-1    |   zapHostName: '192.168.56.20',
 web-1    |   zapPort: '8080',
-web-1    |   zapApiKey: 'v9dn0balpqas1pcc281tn5ood1',
+web-1    |   zapApiKey: '[REDACTED]',
 web-1    |   zapApiFeedbackSpeed: 5000
 web-1    | }
 mongo-1  | {"t":{"$date":"2026-09-25T14:21:31.111+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.2:59106","connectionId":5,"connectionCount":1}}
