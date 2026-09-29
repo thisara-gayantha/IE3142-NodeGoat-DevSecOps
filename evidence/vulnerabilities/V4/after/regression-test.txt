@@ -1,0 +1,73 @@
+removed 58 packages in 8.387s
++ mocha@9.2.2
+added 58 packages from 38 contributors and updated 1 package in 24.727s
+Current Config:
+{
+  port: 4000,
+  db: 'mongodb://localhost:27017/nodegoat',
+  cookieSecret: 'session_cookie_secret_key_here',
+  cryptoKey: 'a_secure_key_for_crypto_here',
+  cryptoAlgo: 'aes256',
+  hostName: 'localhost',
+  environmentalScripts: [
+    `<script>document.write("<script src='http://" + (location.host || "localhost").split(":")[0] + ":35729/livereload.js'></" + "script>");</script>`
+  ],
+  zapHostName: '192.168.56.20',
+  zapPort: '8080',
+  zapApiKey: 'REDACTED',
+  zapApiFeedbackSpeed: 5000
+}
+
+
+  Allocations IDOR fix (V4)
+    ✔ queries the session user's id, not the URL parameter
+
+  Allocations threshold filtering (V2)
+    ✔ filters stocks strictly above "50"
+    ✔ filters stocks strictly above 50
+    ✔ filters stocks strictly above "0"
+    ✔ filters stocks strictly above 0
+    ✔ filters stocks strictly above "99"
+    ✔ filters stocks strictly above 99
+    ✔ rejects invalid threshold -1 before querying
+    ✔ rejects invalid threshold -1 before querying
+    ✔ rejects invalid threshold 100 before querying
+    ✔ rejects invalid threshold 100 before querying
+    ✔ rejects invalid threshold abc before querying
+    ✔ rejects invalid threshold 50abc before querying
+    ✔ rejects invalid threshold 50.5 before querying
+    ✔ rejects invalid threshold 50.5 before querying
+    ✔ rejects invalid threshold 1e1 before querying
+    ✔ rejects invalid threshold 0x32 before querying
+    ✔ rejects invalid threshold  50 before querying
+    ✔ rejects invalid threshold 50  before querying
+    ✔ rejects invalid threshold 50
+ before querying
+    ✔ rejects invalid threshold 
+ before querying
+    ✔ rejects invalid threshold null before querying
+    ✔ rejects invalid threshold false before querying
+    ✔ rejects invalid threshold true before querying
+    ✔ rejects invalid threshold NaN before querying
+    ✔ rejects invalid threshold Infinity before querying
+    ✔ rejects invalid threshold  before querying
+    ✔ rejects invalid threshold 50 before querying
+    ✔ rejects invalid threshold [object Object] before querying
+    ✔ rejects invalid threshold 1'; return 1 == '1 before querying
+    ✔ rejects invalid threshold 0' || true || ' before querying
+    ✔ rejects invalid threshold 0';while(true){}' before querying
+    ✔ preserves an unfiltered lookup for undefined
+    ✔ preserves an unfiltered lookup for ""
+    ✔ continues to use the caller-supplied user ID (V4 behavior)
+    ✔ preserves the existing error when no allocation exceeds the threshold
+
+  Contributions eval injection fix (V1)
+Updated contributions
+    ✔ parses '4*4' as 4 instead of evaluating it to 16
+Updated contributions
+    ✔ still accepts a normal numeric contribution
+    ✔ rejects code input without executing it
+
+
+  39 passing (14ms)
+
