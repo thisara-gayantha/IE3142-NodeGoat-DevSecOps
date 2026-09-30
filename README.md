@@ -18,9 +18,14 @@ Once the application is running, you can access the tutorial page at [http://loc
 
 ##### Default user accounts
 
-The database comes pre-populated with these user accounts created as part of the seed data -
-* Admin Account - u:`admin` p:`Admin_123`
-* User Accounts (u:`user1` p:`User1_123`), (u:`user2` p:`User2_123`)
+The database comes pre-populated with demonstration accounts created as part of the seed data.
+
+* Admin account username: `admin`
+* User account usernames: `user1`, `user2`
+* Passwords are supplied through environment variables and are not stored in the repository:
+  * `NODEGOAT_ADMIN_PASSWORD`
+  * `NODEGOAT_USER1_PASSWORD`
+  * `NODEGOAT_USER2_PASSWORD`
 * New users can also be added using the sign-up page.
 
 ## How to Set Up Your Copy of NodeGoat
