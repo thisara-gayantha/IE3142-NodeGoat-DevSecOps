@@ -12,9 +12,9 @@
 
 ## Evidence
 Querying the users collection on the running local instance returns each user
-document with a readable `password` field (admin: Admin_123, user1: User1_123,
-user2: User2_123). See `passwords-in-db.png`. These are the fake seeded test
-accounts shipped with OWASP NodeGoat, not real credentials.
+document with a readable `password` field for the seeded demonstration accounts.
+See `passwords-in-db.png`. The actual demonstration password values are redacted
+from this documentation because this file records historical baseline evidence.
 
 ## Why this is a risk
 Passwords are stored in directly readable form. Anyone able to read the database —
