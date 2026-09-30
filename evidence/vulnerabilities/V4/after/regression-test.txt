@@ -1,73 +1,125 @@
-removed 58 packages in 8.387s
-+ mocha@9.2.2
-added 58 packages from 38 contributors and updated 1 package in 24.727s
+docker :  Container ie3142-nodegoat-devsecops-mongo-1 Running
+At line:1 char:1
++ docker compose run --rm -e NODE_ENV=test web sh -c "npm test" 2>&1 |  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( Container ie31...ongo-1 Running :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+ Container ie3142-nodegoat-devsecops-mongo-1 Waiting
+ Container ie3142-nodegoat-devsecops-mongo-1 Healthy
+ Container ie3142-nodegoat-devsecops-web-run-fc7612eb4aa5 Creating
+ Container ie3142-nodegoat-devsecops-web-run-fc7612eb4aa5 Created
+
+> owasp-nodejs-goat@1.3.0 test /home/node/app
+> node node_modules/grunt-cli/bin/grunt test
+
+>> Local Npm module "grunt-nodemon" not found. Is it installed?
+
+Running "env:test" (env) task
+
+Running "mochaTest:unit" (mochaTest) task
 Current Config:
 {
-  port: 4000,
-  db: 'mongodb://localhost:27017/nodegoat',
-  cookieSecret: 'session_cookie_secret_key_here',
-  cryptoKey: 'a_secure_key_for_crypto_here',
-  cryptoAlgo: 'aes256',
+  environment: 'test',
+  port: '4000',
   hostName: 'localhost',
-  environmentalScripts: [
-    `<script>document.write("<script src='http://" + (location.host || "localhost").split(":")[0] + ":35729/livereload.js'></" + "script>");</script>`
-  ],
-  zapHostName: '192.168.56.20',
-  zapPort: '8080',
-  zapApiKey: 'REDACTED',
-  zapApiFeedbackSpeed: 5000
+  databaseConfigured: true,
+  cookieSecretConfigured: true,
+  cryptoKeyConfigured: true,
+  zapApiKeyConfigured: true
 }
 
 
   Allocations IDOR fix (V4)
-    ✔ queries the session user's id, not the URL parameter
+
+    Γ£ô queries the session user's id, not the URL parameter
 
   Allocations threshold filtering (V2)
-    ✔ filters stocks strictly above "50"
-    ✔ filters stocks strictly above 50
-    ✔ filters stocks strictly above "0"
-    ✔ filters stocks strictly above 0
-    ✔ filters stocks strictly above "99"
-    ✔ filters stocks strictly above 99
-    ✔ rejects invalid threshold -1 before querying
-    ✔ rejects invalid threshold -1 before querying
-    ✔ rejects invalid threshold 100 before querying
-    ✔ rejects invalid threshold 100 before querying
-    ✔ rejects invalid threshold abc before querying
-    ✔ rejects invalid threshold 50abc before querying
-    ✔ rejects invalid threshold 50.5 before querying
-    ✔ rejects invalid threshold 50.5 before querying
-    ✔ rejects invalid threshold 1e1 before querying
-    ✔ rejects invalid threshold 0x32 before querying
-    ✔ rejects invalid threshold  50 before querying
-    ✔ rejects invalid threshold 50  before querying
-    ✔ rejects invalid threshold 50
+
+    Γ£ô filters stocks strictly above "50"
+
+    Γ£ô filters stocks strictly above 50
+
+    Γ£ô filters stocks strictly above "0"
+
+    Γ£ô filters stocks strictly above 0
+
+    Γ£ô filters stocks strictly above "99"
+
+    Γ£ô filters stocks strictly above 99
+
+    Γ£ô rejects invalid threshold -1 before querying
+
+    Γ£ô rejects invalid threshold -1 before querying
+
+    Γ£ô rejects invalid threshold 100 before querying
+
+    Γ£ô rejects invalid threshold 100 before querying
+
+    Γ£ô rejects invalid threshold abc before querying
+
+    Γ£ô rejects invalid threshold 50abc before querying
+
+    Γ£ô rejects invalid threshold 50.5 before querying
+
+    Γ£ô rejects invalid threshold 50.5 before querying
+
+    Γ£ô rejects invalid threshold 1e1 before querying
+
+    Γ£ô rejects invalid threshold 0x32 before querying
+
+    Γ£ô rejects invalid threshold  50 before querying
+
+    Γ£ô rejects invalid threshold 50  before querying
+
+    Γ£ô rejects invalid threshold 50
  before querying
-    ✔ rejects invalid threshold 
+
+    Γ£ô rejects invalid threshold
  before querying
-    ✔ rejects invalid threshold null before querying
-    ✔ rejects invalid threshold false before querying
-    ✔ rejects invalid threshold true before querying
-    ✔ rejects invalid threshold NaN before querying
-    ✔ rejects invalid threshold Infinity before querying
-    ✔ rejects invalid threshold  before querying
-    ✔ rejects invalid threshold 50 before querying
-    ✔ rejects invalid threshold [object Object] before querying
-    ✔ rejects invalid threshold 1'; return 1 == '1 before querying
-    ✔ rejects invalid threshold 0' || true || ' before querying
-    ✔ rejects invalid threshold 0';while(true){}' before querying
-    ✔ preserves an unfiltered lookup for undefined
-    ✔ preserves an unfiltered lookup for ""
-    ✔ continues to use the caller-supplied user ID (V4 behavior)
-    ✔ preserves the existing error when no allocation exceeds the threshold
+
+    Γ£ô rejects invalid threshold null before querying
+
+    Γ£ô rejects invalid threshold false before querying
+
+    Γ£ô rejects invalid threshold true before querying
+
+    Γ£ô rejects invalid threshold NaN before querying
+
+    Γ£ô rejects invalid threshold Infinity before querying
+
+    Γ£ô rejects invalid threshold  before querying
+
+    Γ£ô rejects invalid threshold 50 before querying
+
+    Γ£ô rejects invalid threshold [object Object] before querying
+
+    Γ£ô rejects invalid threshold 1'; return 1 == '1 before querying
+
+    Γ£ô rejects invalid threshold 0' || true || ' before querying
+
+    Γ£ô rejects invalid threshold 0';while(true){}' before querying
+
+    Γ£ô preserves an unfiltered lookup for undefined
+
+    Γ£ô preserves an unfiltered lookup for ""
+
+    Γ£ô continues to use the caller-supplied user ID (V4 behavior)
+
+    Γ£ô preserves the existing error when no allocation exceeds the threshold
 
   Contributions eval injection fix (V1)
 Updated contributions
-    ✔ parses '4*4' as 4 instead of evaluating it to 16
+
+    Γ£ô parses '4*4' as 4 instead of evaluating it to 16
 Updated contributions
-    ✔ still accepts a normal numeric contribution
-    ✔ rejects code input without executing it
+
+    Γ£ô still accepts a normal numeric contribution
+
+    Γ£ô rejects code input without executing it
 
 
-  39 passing (14ms)
+  39 passing (44ms)
 
+
+Done.

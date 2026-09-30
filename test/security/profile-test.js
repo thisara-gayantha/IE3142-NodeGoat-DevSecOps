@@ -34,7 +34,13 @@ var state = {
 };
 
 var sutUserName = "user1";
-var sutUserPassword = "User1_123";
+var sutUserPassword = process.env.NODEGOAT_USER1_PASSWORD;
+
+if (!sutUserPassword) {
+    throw new Error(
+        "Missing required environment variable: NODEGOAT_USER1_PASSWORD"
+    );
+}
 
 chrome.setDefaultService(service);
 

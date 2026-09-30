@@ -2,9 +2,22 @@ services:
   web:
     build: .
     environment:
-      NODE_ENV: development
-      MONGODB_URI: mongodb://mongo:27017/nodegoat
-    command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${PORT:-4000}
+      MONGODB_URI: ${MONGODB_URI}
+      SESSION_SECRET: ${SESSION_SECRET}
+      CRYPTO_KEY: ${CRYPTO_KEY}
+      ZAP_API_KEY: ${ZAP_API_KEY:-}
+      NODEGOAT_ADMIN_PASSWORD: ${NODEGOAT_ADMIN_PASSWORD}
+      NODEGOAT_USER1_PASSWORD: ${NODEGOAT_USER1_PASSWORD}
+      NODEGOAT_USER2_PASSWORD: ${NODEGOAT_USER2_PASSWORD}
+    command: >
+      sh -c "until nc -z -w 2 mongo 27017
+      && echo 'mongo is ready for connections'
+      && node artifacts/db-reset.js
+      && npm start;
+      do sleep 2;
+      done"
     ports:
       - "4000:4000"
     depends_on:
@@ -19,7 +32,12 @@ services:
     volumes:
       - mongo-data:/data/db
     healthcheck:
-      test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      test:
+        - CMD
+        - mongo
+        - --quiet
+        - --eval
+        - "db.adminCommand('ping').ok"
       interval: 10s
       timeout: 5s
       retries: 5
