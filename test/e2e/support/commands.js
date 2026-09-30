@@ -10,21 +10,32 @@
 
   Cypress.Commands.add("adminSignIn", () => {
     cy.fixture("users/admin.json").as("admin");
+
     cy.get("@admin").then(admin => {
-      cy.signIn(admin.user, admin.pass);
+      cy.signIn(
+        admin.user,
+        Cypress.env("NODEGOAT_ADMIN_PASSWORD")
+      );
     });
   });
 
   Cypress.Commands.add("userSignIn", () => {
     cy.fixture("users/user.json").as("user");
+
     cy.get("@user").then(user => {
-      cy.signIn(user.user, user.pass);
+      cy.signIn(
+        user.user,
+        Cypress.env("NODEGOAT_USER1_PASSWORD")
+      );
     });
   });
 
-  Cypress.Commands.add("visitPage", (path = "/", config = {}) => {
-    cy.visit(path, config);
-  });
+  Cypress.Commands.add(
+    "visitPage",
+    (path = "/", config = {}) => {
+      cy.visit(path, config);
+    }
+  );
 
   Cypress.Commands.add("dbReset", () => {
     cy.exec("npm run db:seed", {
