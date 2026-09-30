@@ -22,9 +22,9 @@ describe("/login behaviour", () => {
   });
 
   it("Should open the tutorial in another tab", () => {
-    cy.get("a[href='/tutorial']").then(function ($a) {
-      const href =
-      $a.prop("href");
+    cy.get("a[href='/tutorial']").then(function($a) {
+      const href = $a.prop("href");
+
       cy.visit(href);
       cy.url().should("include", "tutorial");
     });
@@ -32,29 +32,44 @@ describe("/login behaviour", () => {
 
   it("should have admin user able to login", () => {
     cy.fixture("users/admin.json").as("admin");
+
     cy.get("@admin").then(admin => {
       cy.get("#userName").type(admin.user);
-      cy.get("#password").type(admin.pass);
+
+      cy.get("#password").type(
+        Cypress.env("NODEGOAT_ADMIN_PASSWORD")
+      );
+
       cy.get("[type='submit']").click();
+
       cy.url().should("include", "benefits");
     });
   });
 
   it("should have non-admin user able to login", () => {
     cy.fixture("users/user.json").as("user");
+
     cy.get("@user").then(user => {
       cy.get("#userName").type(user.user);
-      cy.get("#password").type(user.pass);
+
+      cy.get("#password").type(
+        Cypress.env("NODEGOAT_USER1_PASSWORD")
+      );
+
       cy.get("[type='submit']").click();
+
       cy.url().should("include", "dashboard");
     });
   });
 
   it("should reject wrong password", () => {
     cy.fixture("users/user.json").as("user");
+
     cy.get("@user").then(user => {
       cy.get("#userName").type(user.user);
+
       cy.get("#password").type("TO BE REJECTED");
+
       cy.get("[type='submit']").click();
 
       cy.url().should("include", "login");
@@ -67,9 +82,14 @@ describe("/login behaviour", () => {
 
   it("should reject wrong username", () => {
     cy.fixture("users/user.json").as("user");
-    cy.get("@user").then(user => {
+
+    cy.get("@user").then(() => {
       cy.get("#userName").type("INVENTED");
-      cy.get("#password").type(user.pass);
+
+      cy.get("#password").type(
+        Cypress.env("NODEGOAT_USER1_PASSWORD")
+      );
+
       cy.get("[type='submit']").click();
 
       cy.url().should("include", "login");
@@ -87,6 +107,7 @@ describe("/login behaviour", () => {
 
   it("Should redirect to the signup", () => {
     cy.get("a[href='/signup']").click();
+
     cy.url().should("include", "signup");
   });
 });

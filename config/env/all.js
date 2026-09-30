@@ -1,12 +1,25 @@
-// default app configuration
+"use strict";
+
+// Default application configuration.
+// Sensitive values must be provided through environment variables.
+
+function requireEnv(name) {
+    const value = process.env[name];
+
+    if (!value) {
+        throw new Error(`Missing required environment variable: ${name}`);
+    }
+
+    return value;
+}
+
 const port = process.env.PORT || 4000;
-let db = process.env.MONGODB_URI || "mongodb://localhost:27017/nodegoat";
 
 module.exports = {
     port,
-    db,
-    cookieSecret: "session_cookie_secret_key_here",
-    cryptoKey: "a_secure_key_for_crypto_here",
+    db: requireEnv("MONGODB_URI"),
+    cookieSecret: requireEnv("SESSION_SECRET"),
+    cryptoKey: requireEnv("CRYPTO_KEY"),
     cryptoAlgo: "aes256",
     hostName: "localhost",
     environmentalScripts: []
