@@ -1,10 +1,10 @@
-h# OWASP NodeGoat – STRIDE Threat Model and Risk Assessment
+h# OWASP NodeGoat " STRIDE Threat Model and Risk Assessment
 
-**Module:** IE3142 – DevOps Security  
+**Module:** IE3142 " DevOps Security  
 **Project:** Building and Securing a DevSecOps Pipeline  
 **Selected Application:** OWASP NodeGoat  
 **Technology Stack:** Node.js, Express.js, MongoDB, Docker, Docker Compose  
-**Assessment Stage:** Vulnerable Baseline – Before Security Remediation  
+**Assessment Stage:** Vulnerable Baseline " Before Security Remediation  
 **Date:** 2026-09-19  
 
 ---
@@ -53,18 +53,18 @@ network using port `27017`.
 | **E1** | External Entity | User / Web Browser |
 | **P1** | Process | NodeGoat Node.js / Express Web Application |
 | **D1** | Data Store | MongoDB Database |
-| **DF1** | Data Flow | Browser → NodeGoat HTTP Request |
-| **DF2** | Data Flow | NodeGoat → Browser HTTP Response |
-| **DF3** | Data Flow | NodeGoat → MongoDB Query / Write |
-| **DF4** | Data Flow | MongoDB → NodeGoat Query Result |
-| **TB1** | Trust Boundary | External User / Browser ↔ NodeGoat Application |
-| **TB2** | Trust Boundary | NodeGoat Application ↔ MongoDB Database |
+| **DF1** | Data Flow | Browser ' NodeGoat HTTP Request |
+| **DF2** | Data Flow | NodeGoat ' Browser HTTP Response |
+| **DF3** | Data Flow | NodeGoat ' MongoDB Query / Write |
+| **DF4** | Data Flow | MongoDB ' NodeGoat Query Result |
+| **TB1** | Trust Boundary | External User / Browser " NodeGoat Application |
+| **TB2** | Trust Boundary | NodeGoat Application " MongoDB Database |
 
 ---
 
 # 3. Main Data Flows
 
-## DF1 – Browser to NodeGoat
+## DF1 " Browser to NodeGoat
 
 The browser sends user-controlled information to the NodeGoat application.
 
@@ -86,7 +86,7 @@ the main external trust boundary, **TB1**.
 
 ---
 
-## DF2 – NodeGoat to Browser
+## DF2 " NodeGoat to Browser
 
 NodeGoat sends HTTP responses back to the browser.
 
@@ -104,7 +104,7 @@ These responses may contain:
 
 ---
 
-## DF3 – NodeGoat to MongoDB
+## DF3 " NodeGoat to MongoDB
 
 The application sends database operations to MongoDB.
 
@@ -122,7 +122,7 @@ This data flow crosses **TB2**, the application-to-database trust boundary.
 
 ---
 
-## DF4 – MongoDB to NodeGoat
+## DF4 " MongoDB to NodeGoat
 
 MongoDB returns stored application information to NodeGoat.
 
@@ -144,12 +144,12 @@ STRIDE is used to classify security threats into six major categories.
 
 | STRIDE Category | Security Property Affected | Meaning |
 |---|---|---|
-| **S – Spoofing** | Authentication | Pretending to be another user or identity |
-| **T – Tampering** | Integrity | Unauthorized modification of data or application behaviour |
-| **R – Repudiation** | Accountability | Performing an action while preventing reliable attribution |
-| **I – Information Disclosure** | Confidentiality | Exposure of information to unauthorized parties |
-| **D – Denial of Service** | Availability | Preventing or degrading legitimate use of the system |
-| **E – Elevation of Privilege** | Authorization | Gaining permissions beyond those legitimately assigned |
+| **S " Spoofing** | Authentication | Pretending to be another user or identity |
+| **T " Tampering** | Integrity | Unauthorized modification of data or application behaviour |
+| **R " Repudiation** | Accountability | Performing an action while preventing reliable attribution |
+| **I " Information Disclosure** | Confidentiality | Exposure of information to unauthorized parties |
+| **D " Denial of Service** | Availability | Preventing or degrading legitimate use of the system |
+| **E " Elevation of Privilege** | Authorization | Gaining permissions beyond those legitimately assigned |
 
 Threats in this document were derived from the actual NodeGoat architecture and
 source code rather than being created only from a generic STRIDE checklist.
@@ -158,7 +158,7 @@ source code rather than being created only from a generic STRIDE checklist.
 
 # 5. Risk Assessment Method
 
-A qualitative **3 × 3 Likelihood–Impact Risk Matrix** is used.
+A qualitative **3 - 3 Likelihood"Impact Risk Matrix** is used.
 
 ## 5.1 Likelihood
 
@@ -207,7 +207,7 @@ Successful exploitation could result in consequences such as:
 
 ## 5.3 Risk Matrix
 
-| Likelihood ↓ / Impact → | Low | Medium | High |
+| Likelihood " / Impact ' | Low | Medium | High |
 |---|---|---|---|
 | **High** | Medium | High | High |
 | **Medium** | Low | Medium | High |
@@ -220,7 +220,7 @@ impact.
 
 # 6. Completed STRIDE Threat Model
 
-## T1 – Weak Authentication and Password Protection
+## T1 " Weak Authentication and Password Protection
 
 | Field | Assessment |
 |---|---|
@@ -239,18 +239,18 @@ impact.
 | **Planned Control** | Hash passwords using a strong adaptive password hashing algorithm such as bcrypt; use the same generic authentication error message for invalid credentials; regenerate the session identifier after successful authentication. |
 | **Implementation Location** | `app/data/user-dao.js`, `app/routes/session.js` |
 | **Verification Method** | Inspect MongoDB to confirm passwords are no longer stored in plaintext; verify both incorrect usernames and passwords generate equivalent responses; confirm login creates a new session identifier. |
-| **Reference Mapping** | CWE-256 – Plaintext Storage of a Password; CWE-384 – Session Fixation; OWASP Password Storage guidance; OWASP Authentication guidance |
+| **Reference Mapping** | CWE-256 " Plaintext Storage of a Password; CWE-384 " Session Fixation; OWASP Password Storage guidance; OWASP Authentication guidance |
 
 ---
 
-## T2 – Server-Side JavaScript Injection through `eval()`
+## T2 " Server-Side JavaScript Injection through `eval()`
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T2 |
 | **STRIDE Category** | Tampering / Elevation of Privilege |
 | **Threat Scenario** | A malicious authenticated user may submit a JavaScript expression instead of a normal numeric contribution value. The application evaluates the submitted `preTax`, `afterTax`, and `roth` values using JavaScript `eval()`, causing untrusted user input to be interpreted as executable server-side JavaScript. |
-| **Architecture Elements** | E1 → DF1 → P1, TB1 |
+| **Architecture Elements** | E1 ' DF1 ' P1, TB1 |
 | **Affected Assets** | Application integrity, server-side execution environment, contribution-processing logic |
 | **Relevant Code** | `app/routes/contributions.js` |
 | **Likelihood** | High |
@@ -262,19 +262,19 @@ impact.
 | **Planned Control** | Remove all uses of `eval()` for contribution values. Parse values as numeric data only, validate type and allowed range, reject unexpected formats, and add regression tests preventing executable expressions from being accepted. |
 | **Implementation Location** | `app/routes/contributions.js`; related automated tests; Semgrep CI security gate |
 | **Verification Method** | Execute the baseline test using a controlled expression, record the result, apply the fix, and repeat the exact same test to verify the expression is rejected. Confirm normal numeric contribution values continue to work. |
-| **Reference Mapping** | CWE-95 – Improper Neutralization of Directives in Dynamically Evaluated Code / Eval Injection |
-| **Exploit-and-Fix Candidate** | **V1 – Selected** |
+| **Reference Mapping** | CWE-95 " Improper Neutralization of Directives in Dynamically Evaluated Code / Eval Injection |
+| **Exploit-and-Fix Candidate** | **V1 " Selected** |
 
 ---
 
-## T3 – MongoDB / NoSQL Injection through `$where`
+## T3 " MongoDB / NoSQL Injection through `$where`
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T3 |
 | **STRIDE Category** | Tampering / Denial of Service |
 | **Threat Scenario** | A malicious user may manipulate the allocation `threshold` query parameter because its value is inserted into a dynamically constructed MongoDB `$where` JavaScript expression. Crafted input may change database query behaviour or cause computationally expensive JavaScript execution inside the database. |
-| **Architecture Elements** | E1 → DF1 → P1 → DF3 → D1, TB1, TB2 |
+| **Architecture Elements** | E1 ' DF1 ' P1 ' DF3 ' D1, TB1, TB2 |
 | **Affected Assets** | Allocation records, database query integrity, MongoDB availability |
 | **Relevant Code** | `app/data/allocations-dao.js` |
 | **Likelihood** | High |
@@ -286,19 +286,19 @@ impact.
 | **Planned Control** | Remove the dynamically constructed `$where` expression. Parse the threshold as an integer, apply strict range validation, and use normal MongoDB query operators such as `$gt`. |
 | **Implementation Location** | `app/data/allocations-dao.js` |
 | **Verification Method** | Record baseline behaviour using the controlled injection input. Apply the safe query implementation and repeat the exact same input. Confirm the malicious expression no longer changes query behaviour while valid threshold searches remain functional. |
-| **Reference Mapping** | CWE-943 – Improper Neutralization of Special Elements in Data Query Logic; OWASP Injection guidance |
-| **Exploit-and-Fix Candidate** | **V2 – Selected** |
+| **Reference Mapping** | CWE-943 " Improper Neutralization of Special Elements in Data Query Logic; OWASP Injection guidance |
+| **Exploit-and-Fix Candidate** | **V2 " Selected** |
 
 ---
 
-## T4 – Log Injection / Log Forging
+## T4 " Log Injection / Log Forging
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T4 |
 | **STRIDE Category** | Repudiation |
 | **Threat Scenario** | An attacker may submit specially crafted username input containing newline or control characters during a failed login attempt. Because the username is written directly into an application log message, malicious input could create misleading or forged-looking log entries and reduce the reliability of audit information. |
-| **Architecture Elements** | E1 → DF1 → P1, TB1 |
+| **Architecture Elements** | E1 ' DF1 ' P1, TB1 |
 | **Affected Assets** | Application logs, security audit trail, incident investigation records |
 | **Relevant Code** | `app/routes/session.js` |
 | **Likelihood** | Medium |
@@ -310,11 +310,11 @@ impact.
 | **Planned Control** | Remove or encode control characters before logging user-controlled values. Prefer structured logging where untrusted values are stored as separate fields rather than concatenated into free-form log messages. |
 | **Implementation Location** | `app/routes/session.js`; application logging configuration |
 | **Verification Method** | Submit a username containing newline/control characters and inspect the resulting baseline log. After remediation, repeat the test and confirm the input cannot create an additional forged-looking log entry. |
-| **Reference Mapping** | CWE-117 – Improper Output Neutralization for Logs |
+| **Reference Mapping** | CWE-117 " Improper Output Neutralization for Logs |
 
 ---
 
-## T5 – Exposure of Sensitive Profile Information
+## T5 " Exposure of Sensitive Profile Information
 
 | Field | Assessment |
 |---|---|
@@ -333,18 +333,18 @@ impact.
 | **Planned Control** | Minimize storage of unnecessary sensitive information; encrypt highly sensitive fields at rest using appropriate authenticated encryption; keep encryption keys outside source code using secure configuration/secrets management; use HTTPS and appropriately secured cookies in production-equivalent deployment. |
 | **Implementation Location** | `app/data/profile-dao.js`, `server.js`, environment/secrets configuration |
 | **Verification Method** | Inspect the stored database representation before and after remediation. Verify sensitive fields are no longer readable directly and that required application functionality continues to work. |
-| **Reference Mapping** | CWE-312 – Cleartext Storage of Sensitive Information; CWE-319 – Cleartext Transmission of Sensitive Information |
+| **Reference Mapping** | CWE-312 " Cleartext Storage of Sensitive Information; CWE-319 " Cleartext Transmission of Sensitive Information |
 
 ---
 
-## T6 – Regular Expression Denial of Service (ReDoS)
+## T6 " Regular Expression Denial of Service (ReDoS)
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T6 |
 | **STRIDE Category** | Denial of Service |
 | **Threat Scenario** | An authenticated user may submit a specially crafted and sufficiently long bank-routing value that causes excessive backtracking in the vulnerable regular expression. Because Node.js processes JavaScript on its event loop, excessive regex processing may reduce application responsiveness. |
-| **Architecture Elements** | E1 → DF1 → P1, TB1 |
+| **Architecture Elements** | E1 ' DF1 ' P1, TB1 |
 | **Affected Assets** | Application availability, Node.js CPU/event-loop processing |
 | **Relevant Code** | `app/routes/profile.js` |
 | **Likelihood** | Medium |
@@ -356,18 +356,18 @@ impact.
 | **Planned Control** | Replace the vulnerable nested expression with a simpler bounded or anchored expression and enforce a maximum acceptable input length before regex evaluation. |
 | **Implementation Location** | `app/routes/profile.js` |
 | **Verification Method** | Measure application response behaviour using the controlled baseline input. Apply remediation and repeat the same input, confirming it is rejected or processed without excessive delay. |
-| **Reference Mapping** | CWE-1333 – Inefficient Regular Expression Complexity |
+| **Reference Mapping** | CWE-1333 " Inefficient Regular Expression Complexity |
 
 ---
 
-## T7 – Missing Function-Level Authorization on Administrative Benefits Functions
+## T7 " Missing Function-Level Authorization on Administrative Benefits Functions
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T7 |
 | **STRIDE Category** | Elevation of Privilege |
 | **Threat Scenario** | A normal authenticated user may access administrative Benefits functionality because both the GET and POST `/benefits` routes currently require only authentication. NodeGoat already contains an administrator-check middleware, but that middleware is not active on the Benefits routes in the vulnerable baseline. |
-| **Architecture Elements** | E1 → DF1 → P1 → DF3 → D1, TB1, TB2 |
+| **Architecture Elements** | E1 ' DF1 ' P1 ' DF3 ' D1, TB1, TB2 |
 | **Affected Assets** | Administrative functions, benefit records, authorization model |
 | **Relevant Code** | `app/routes/index.js`, `app/routes/session.js`, `app/routes/benefits.js` |
 | **Likelihood** | High |
@@ -379,19 +379,19 @@ impact.
 | **Planned Control** | Apply administrator authorization middleware to every administrative Benefits operation. Enforce server-side authorization regardless of whether the UI displays administrative links. Add tests confirming normal users are denied while administrator users are permitted. |
 | **Implementation Location** | `app/routes/index.js`, `app/routes/session.js`, authorization tests |
 | **Verification Method** | Log in as a normal user and record baseline access to the Benefits endpoint. Apply authorization middleware and repeat the exact request. Confirm the normal user is denied while the administrator account can still access the function. |
-| **Reference Mapping** | CWE-862 – Missing Authorization; OWASP Broken Access Control guidance |
-| **Exploit-and-Fix Candidate** | **V3 – Selected** |
+| **Reference Mapping** | CWE-862 " Missing Authorization; OWASP Broken Access Control guidance |
+| **Exploit-and-Fix Candidate** | **V3 " Selected** |
 
 ---
 
-## T8 – IDOR / Broken Object-Level Authorization in Allocations
+## T8 " IDOR / Broken Object-Level Authorization in Allocations
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T8 |
 | **STRIDE Category** | Elevation of Privilege / Information Disclosure |
 | **Threat Scenario** | An authenticated user may modify the `userId` in `/allocations/:userId` and request another user's allocation information because the application uses the URL parameter to determine which user's record should be queried rather than deriving the identity from the authenticated session or performing an explicit ownership authorization check. |
-| **Architecture Elements** | E1 → DF1 → P1 → DF3 → D1 → DF4 → P1 → DF2 → E1, TB1, TB2 |
+| **Architecture Elements** | E1 ' DF1 ' P1 ' DF3 ' D1 ' DF4 ' P1 ' DF2 ' E1, TB1, TB2 |
 | **Affected Assets** | Other users' allocation information, user privacy, authorization boundaries |
 | **Relevant Code** | `app/routes/allocations.js`, `app/data/allocations-dao.js` |
 | **Likelihood** | High |
@@ -403,19 +403,19 @@ impact.
 | **Planned Control** | Derive the current user's identifier from the authenticated session for user-owned resources or explicitly compare the requested object with the authenticated user's authorization. Return an appropriate access-denied response for unauthorized requests. |
 | **Implementation Location** | `app/routes/allocations.js`; authorization regression tests |
 | **Verification Method** | Authenticate as User A and request User B's allocation identifier. Record baseline access. Apply the authorization control and repeat the exact request. Confirm User A can no longer obtain User B's data while access to User A's own record continues to work. |
-| **Reference Mapping** | CWE-639 – Authorization Bypass Through User-Controlled Key; OWASP IDOR / Broken Access Control guidance |
-| **Exploit-and-Fix Candidate** | **V4 – Selected** |
+| **Reference Mapping** | CWE-639 " Authorization Bypass Through User-Controlled Key; OWASP IDOR / Broken Access Control guidance |
+| **Exploit-and-Fix Candidate** | **V4 " Selected** |
 
 ---
 
-## T9 – Server-Side Request Forgery through the Research Function
+## T9 " Server-Side Request Forgery through the Research Function
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T9 |
 | **STRIDE Category** | Information Disclosure / Tampering |
 | **Threat Scenario** | An authenticated user can influence the destination of a server-side HTTP request through the Research endpoint. The application concatenates the user-controlled `url` and `symbol` query parameters and passes the resulting value to `needle.get()`. A malicious user may therefore attempt to cause the NodeGoat server to send requests to destinations chosen by the user, including services that may not normally be directly reachable from the user's browser. |
-| **Architecture Elements** | E1 → DF1 → P1 → outbound server-side request, TB1 |
+| **Architecture Elements** | E1 ' DF1 ' P1 ' outbound server-side request, TB1 |
 | **Affected Assets** | Internal network services, application network identity, information returned from reachable services |
 | **Relevant Code** | `app/routes/research.js` |
 | **Likelihood** | Medium |
@@ -427,19 +427,19 @@ impact.
 | **Planned Control** | Do not permit arbitrary user-controlled destinations. Use a fixed trusted service base URL where possible. Otherwise parse the destination safely, allow only approved protocols and hostnames, reject loopback/private/internal destinations where appropriate, disable unnecessary redirects, and enforce request timeouts. |
 | **Implementation Location** | `app/routes/research.js`; outbound-network configuration |
 | **Verification Method** | In the authorised local environment, record whether the baseline server attempts a request to a controlled local destination. After remediation, repeat the same request and verify that non-approved destinations are rejected. |
-| **Reference Mapping** | CWE-918 – Server-Side Request Forgery (SSRF); OWASP SSRF Prevention guidance |
+| **Reference Mapping** | CWE-918 " Server-Side Request Forgery (SSRF); OWASP SSRF Prevention guidance |
 | **Exploit-and-Fix Candidate** | Additional candidate if a fifth vulnerability is required |
 
 ---
 
-## T10 – Unvalidated Redirect
+## T10 " Unvalidated Redirect
 
 | Field | Assessment |
 |---|---|
 | **Threat ID** | T10 |
 | **STRIDE Category** | Spoofing / Tampering |
 | **Threat Scenario** | An authenticated user can provide a destination through the `url` query parameter of the `/learn` route. The application passes this value directly to `res.redirect()`. An attacker could construct a NodeGoat link that redirects a victim to an attacker-controlled destination, which could support phishing or credential-stealing scenarios. |
-| **Architecture Elements** | E1 → DF1 → P1 → DF2 → E1, TB1 |
+| **Architecture Elements** | E1 ' DF1 ' P1 ' DF2 ' E1, TB1 |
 | **Affected Assets** | User trust, navigation integrity, authentication credentials if combined with phishing |
 | **Relevant Code** | `app/routes/index.js` |
 | **Likelihood** | Medium |
@@ -451,7 +451,7 @@ impact.
 | **Planned Control** | Avoid accepting complete redirect destinations from users. Use server-side identifiers mapped to trusted destinations, or strictly validate redirects against an allowlist of approved relative paths or trusted origins. |
 | **Implementation Location** | `app/routes/index.js` |
 | **Verification Method** | Record the baseline redirect to a controlled test destination. Apply validation and repeat the exact request. Confirm external or unapproved destinations are rejected while legitimate learning-resource navigation continues to function. |
-| **Reference Mapping** | CWE-601 – URL Redirection to Untrusted Site |
+| **Reference Mapping** | CWE-601 " URL Redirection to Untrusted Site |
 | **Exploit-and-Fix Candidate** | Additional candidate |
 
 ---
@@ -547,21 +547,21 @@ before-and-after security lifecycle.
 Recommended repository structure:
 
     evidence/
-    ├── V1-eval-injection/
-    │   ├── before/
-    │   └── after/
-    │
-    ├── V2-nosql-injection/
-    │   ├── before/
-    │   └── after/
-    │
-    ├── V3-admin-authorization/
-    │   ├── before/
-    │   └── after/
-    │
-    └── V4-idor/
-        ├── before/
-        └── after/
+    """ V1-eval-injection/
+    "   """ before/
+    "   """" after/
+    "
+    """ V2-nosql-injection/
+    "   """ before/
+    "   """" after/
+    "
+    """ V3-admin-authorization/
+    "   """ before/
+    "   """" after/
+    "
+    """" V4-idor/
+        """ before/
+        """" after/
 
 For each vulnerability, evidence should include:
 
@@ -581,7 +581,7 @@ For each vulnerability, evidence should include:
 
 # 12. Planned Vulnerability-to-Control Mapping
 
-## V1 – Server-Side JavaScript Injection
+## V1 " Server-Side JavaScript Injection
 
 **Threat:** T2  
 **Current weakness:** User input reaches `eval()`.  
@@ -592,7 +592,7 @@ valid numeric contribution values continue to function.
 
 ---
 
-## V2 – NoSQL Injection
+## V2 " NoSQL Injection
 
 **Threat:** T3  
 **Current weakness:** User-controlled threshold data is inserted into a MongoDB
@@ -605,7 +605,7 @@ logic while valid threshold filtering remains functional.
 
 ---
 
-## V3 – Missing Administrator Authorization
+## V3 " Missing Administrator Authorization
 
 **Threat:** T7  
 **Current weakness:** `/benefits` requires authentication but does not enforce
@@ -618,7 +618,7 @@ administrator retains legitimate access.
 
 ---
 
-## V4 – IDOR / Broken Object-Level Authorization
+## V4 " IDOR / Broken Object-Level Authorization
 
 **Threat:** T8  
 **Current weakness:** The allocations route trusts the `userId` from the URL.  
@@ -679,7 +679,7 @@ of T7 and T8.
 
 This threat model represents the **vulnerable baseline**.
 
-After V1–V4 are remediated, this file must be updated so that the
+After V1"V4 are remediated, this file must be updated so that the
 **Planned / Proposed Control** for each remediated vulnerability becomes an
 **Implemented Control**.
 
@@ -703,25 +703,25 @@ The final entries should include:
 This will provide traceability through the complete security lifecycle:
 
     Architecture
-        ↓
+        "
     Trust Boundary / Data Flow
-        ↓
+        "
     STRIDE Threat
-        ↓
+        "
     Vulnerability
-        ↓
+        "
     Risk Assessment
-        ↓
+        "
     Planned Control
-        ↓
+        "
     Secure Code Change
-        ↓
+        "
     Git Commit
-        ↓
+        "
     Exact Re-Test
-        ↓
+        "
     CI/CD Security Validation
-        ↓
+        "
     Evidence
 
 ---
@@ -760,33 +760,33 @@ the relevant code has been changed, tested, committed, and verified.
 
 The following security references are relevant to this threat model:
 
-1. **OWASP NodeGoat** – intentionally vulnerable Node.js web application.
-2. **OWASP Threat Modeling guidance** – architecture and trust-boundary-driven
+1. **OWASP NodeGoat** " intentionally vulnerable Node.js web application.
+2. **OWASP Threat Modeling guidance** " architecture and trust-boundary-driven
    threat identification.
-3. **OWASP Password Storage Cheat Sheet** – secure password hashing practices.
-4. **OWASP Session Management Cheat Sheet** – session identifier and cookie
+3. **OWASP Password Storage Cheat Sheet** " secure password hashing practices.
+4. **OWASP Session Management Cheat Sheet** " session identifier and cookie
    security.
-5. **OWASP Authorization Cheat Sheet** – server-side authorization controls.
-6. **OWASP Insecure Direct Object Reference Prevention guidance** – object-level
+5. **OWASP Authorization Cheat Sheet** " server-side authorization controls.
+6. **OWASP Insecure Direct Object Reference Prevention guidance** " object-level
    authorization.
-7. **OWASP Server-Side Request Forgery Prevention Cheat Sheet** – outbound
+7. **OWASP Server-Side Request Forgery Prevention Cheat Sheet** " outbound
    destination validation.
-8. **OWASP Injection Prevention guidance** – prevention of untrusted-data
+8. **OWASP Injection Prevention guidance** " prevention of untrusted-data
    interpretation.
-9. **CWE-95** – Improper Neutralization of Directives in Dynamically Evaluated
+9. **CWE-95** " Improper Neutralization of Directives in Dynamically Evaluated
    Code.
-10. **CWE-117** – Improper Output Neutralization for Logs.
-11. **CWE-256** – Plaintext Storage of a Password.
-12. **CWE-312** – Cleartext Storage of Sensitive Information.
-13. **CWE-319** – Cleartext Transmission of Sensitive Information.
-14. **CWE-384** – Session Fixation.
-15. **CWE-601** – URL Redirection to Untrusted Site.
-16. **CWE-639** – Authorization Bypass Through User-Controlled Key.
-17. **CWE-862** – Missing Authorization.
-18. **CWE-918** – Server-Side Request Forgery.
-19. **CWE-943** – Improper Neutralization of Special Elements in Data Query
+10. **CWE-117** " Improper Output Neutralization for Logs.
+11. **CWE-256** " Plaintext Storage of a Password.
+12. **CWE-312** " Cleartext Storage of Sensitive Information.
+13. **CWE-319** " Cleartext Transmission of Sensitive Information.
+14. **CWE-384** " Session Fixation.
+15. **CWE-601** " URL Redirection to Untrusted Site.
+16. **CWE-639** " Authorization Bypass Through User-Controlled Key.
+17. **CWE-862** " Missing Authorization.
+18. **CWE-918** " Server-Side Request Forgery.
+19. **CWE-943** " Improper Neutralization of Special Elements in Data Query
     Logic.
-20. **CWE-1333** – Inefficient Regular Expression Complexity.
+20. **CWE-1333** " Inefficient Regular Expression Complexity.
 
 ---
 
@@ -803,10 +803,10 @@ Medium risk.
 Four threats have been prioritised for the assignment's secure coding
 demonstrations:
 
-- V1 – Server-Side JavaScript Injection;
-- V2 – MongoDB / NoSQL Injection;
-- V3 – Missing Function-Level Authorization;
-- V4 – IDOR / Broken Object-Level Authorization.
+- V1 " Server-Side JavaScript Injection;
+- V2 " MongoDB / NoSQL Injection;
+- V3 " Missing Function-Level Authorization;
+- V4 " IDOR / Broken Object-Level Authorization.
 
 These vulnerabilities provide a clear relationship between the architecture,
 STRIDE model, source-code weakness, remediation control, exact re-test, and
@@ -814,14 +814,14 @@ DevSecOps pipeline evidence.
 
 The next project stage is to preserve the vulnerable baseline, perform the
 baseline SAST and dependency-security scans, and then collect the authorised
-BEFORE evidence for V1–V4 before modifying the vulnerable source code.
+BEFORE evidence for V1"V4 before modifying the vulnerable source code.
 ---
 
 # 16. Implemented Controls and Evidence Update
 
 This section records the controls that were implemented after the initial STRIDE threat model was prepared. It provides traceability between the planned threats, implemented fixes, commit history, and evidence paths.
 
-## T3 / V2 � MongoDB NoSQL Injection through `$where`
+## T3 / V2 - MongoDB NoSQL Injection through `$where`
 
 **Original planned control:**  
 Remove the dynamically constructed `$where` expression. Parse the threshold as an integer, apply strict range validation, and use normal MongoDB query operators such as `$gt`.
@@ -855,7 +855,7 @@ This prevents crafted input such as `1'; return true; var x='` from becoming par
 
 ---
 
-## T9 � Server-Side Request Forgery through the Research Function
+## T9 - Server-Side Request Forgery through the Research Function
 
 **Original planned control:**  
 Do not permit arbitrary user-controlled destinations. Use a fixed trusted service base URL where possible. Otherwise parse the destination safely, allow only approved protocols and hostnames, reject loopback/private/internal destinations where appropriate, disable unnecessary redirects, and enforce request timeouts.
@@ -925,10 +925,10 @@ The DevSecOps Security Pipeline was added using GitHub Actions.
 **Pipeline stages:**  
 
 - Build and Unit Tests
-- SAST � Semgrep
-- Dependency Scan � npm audit
-- Secrets Scan � Gitleaks
-- Container Scan � Trivy
+- SAST - Semgrep
+- Dependency Scan - npm audit
+- Secrets Scan - Gitleaks
+- Container Scan - Trivy
 
 **Security gate behaviour:**  
 The pipeline produced successful build/test and SAST stages, while dependency, secrets, and container scanning produced blocking failures. This demonstrates that the CI/CD security gates can stop insecure builds.
